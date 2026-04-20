@@ -1,0 +1,322 @@
+package com.example.streakup.StreakUp
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.example.streakup.R
+import com.example.streakup.ui.theme.LoginPurple
+import com.example.streakup.ui.theme.StreakBG
+import com.example.streakup.ui.theme.TextBoxColor
+import com.example.streakup.ui.theme.TextPurple
+
+@Composable
+fun CreateAccount(navegante: NavHostController){
+
+    var name by remember { mutableStateOf("") }
+    var mail by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var checked by remember { mutableStateOf(false) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(StreakBG),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Spacer(modifier = Modifier.size(40.dp))
+
+        Text(
+            "Crear cuenta",
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.White
+        )
+
+        Text(
+            "Comienza tu viaje de hábitos",
+            fontSize = 14.sp,
+            color = Color.LightGray,
+            modifier = Modifier.padding(top = 5.dp, bottom = 25.dp)
+        )
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(5.dp),
+            horizontalAlignment = Alignment.Start
+        ) {
+
+            Text(
+                "Nombre",
+                fontSize = 16.sp,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(10.dp)
+            )
+
+            OutlinedTextField(
+                value = name,
+                onValueChange = { name = it },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Filled.Email,
+                        contentDescription = ""
+                    )
+                },
+                placeholder = {
+                    Text("Tu nombre")
+                },
+                modifier = Modifier
+                    .padding(6.dp)
+                    .fillMaxWidth(),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = TextBoxColor,
+                    unfocusedContainerColor = TextBoxColor,
+                    focusedIndicatorColor = Color.Gray,
+                    unfocusedIndicatorColor = Color.Gray
+                )
+            )
+
+            Text(
+                "Correo",
+                fontSize = 16.sp,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(10.dp)
+            )
+
+            OutlinedTextField(
+                value = mail,
+                onValueChange = { mail = it },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Filled.Email,
+                        contentDescription = ""
+                    )
+                },
+                placeholder = {
+                    Text("tu@email.com")
+                },
+                modifier = Modifier
+                    .padding(6.dp)
+                    .fillMaxWidth(),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = TextBoxColor,
+                    unfocusedContainerColor = TextBoxColor,
+                    focusedIndicatorColor = Color.Gray,
+                    unfocusedIndicatorColor = Color.Gray
+                )
+            )
+
+            Text(
+                "Contraseña",
+                fontSize = 16.sp,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(10.dp)
+            )
+
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Filled.Lock,
+                        contentDescription = ""
+                    )
+                },
+                placeholder = {
+                    Text("*********")
+                },
+                modifier = Modifier
+                    .padding(6.dp)
+                    .fillMaxWidth(),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = TextBoxColor,
+                    unfocusedContainerColor = TextBoxColor,
+                    focusedIndicatorColor = Color.Gray,
+                    unfocusedIndicatorColor = Color.Gray
+                )
+            )
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Checkbox(
+                    checked = checked,
+                    onCheckedChange = { checked = it }
+                )
+
+                Text(
+                    "Acepto los ",
+                    fontSize = 14.sp,
+                    color = Color.LightGray
+                )
+
+                Text(
+                    "términos y condiciones",
+                    fontSize = 14.sp,
+                    color = TextPurple
+                )
+
+                Text(
+                    " y la ",
+                    fontSize = 14.sp,
+                    color = Color.LightGray
+                )
+
+                Text(
+                    "política de privacidad",
+                    fontSize = 14.sp,
+                    color = TextPurple
+                )
+            }
+        }
+
+        Button(
+            onClick = {
+                navegante.navigate(Home)
+
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp)
+                .height(55.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = LoginPurple,
+                contentColor = Color.White
+            )
+        ) {
+            Text("Crear cuenta")
+        }
+
+        Text(
+            "o continúa con",
+            fontSize = 16.sp,
+            color = Color.LightGray,
+            modifier = Modifier.padding(12.dp)
+        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(80.dp)
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+
+            Row(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(10.dp))
+                    .fillMaxWidth(0.45f)
+                    .height(55.dp)
+                    .background(TextBoxColor),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.googlelogo),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(60.dp)
+                        .padding(6.dp)
+                )
+
+                Text(
+                    "Google",
+                    fontSize = 16.sp,
+                    color = Color.LightGray
+                )
+            }
+
+            Row(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(10.dp))
+                    .fillMaxWidth(0.9f)
+                    .height(55.dp)
+                    .background(TextBoxColor),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.githublogo),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(60.dp)
+                        .padding(6.dp)
+                )
+
+                Text(
+                    "GitHub",
+                    fontSize = 16.sp,
+                    color = Color.LightGray
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.size(10.dp))
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                "¿Ya tienes cuenta?",
+                fontSize = 16.sp,
+                color = Color.White
+            )
+
+            Text(
+                " Iniciar sesión",
+                fontSize = 16.sp,
+                color = TextPurple,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.clickable(){
+                    navegante.navigate(Home)
+                }
+            )
+        }
+    }
+}
