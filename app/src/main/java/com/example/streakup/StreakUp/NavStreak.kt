@@ -1,8 +1,10 @@
 package com.example.streakup.StreakUp
-import android.app.Person
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -15,11 +17,27 @@ object Home
 @Serializable
 object CreateAccountObject
 
+@Serializable
+object HabitsRoute
+
+@Serializable
+object CreateHabitRoute
+
+@Serializable
+object ProfileRoute
+
 
 
 @Serializable
 data class StreakUser(
     val userName: String,
+)
+
+data class CurrentUser(
+    val id: Int,
+    val username: String,
+    val email: String,
+    val password: String
 )
 
 
@@ -28,10 +46,22 @@ data class StreakUser(
 
 fun NavManager() {
     val navController = rememberNavController()
+    var currentUser by remember { mutableStateOf<CurrentUser?>(null) }
+
     NavHost(navController, startDestination = Home){
 
         composable<Home> {
-            LoginStreak(navController)
+            LoginStreak(
+                navegante = navController,
+                onLoginSuccess = { user ->
+                    currentUser = CurrentUser(
+                        id = user.id,
+                        username = user.username,
+                        email = user.email,
+                        password = user.password.orEmpty()
+                    )
+                }
+            )
         }
 
         composable<CreateAccountObject> {
@@ -40,9 +70,20 @@ fun NavManager() {
 
         composable<StreakUser> {
             val datosStreak: StreakUser = it.toRoute()
-            HomeStreak(datosStreak)
+            HomeStreak(navController, datosStreak, currentUser)
         }
 
+        composable<HabitsRoute> {
+            HabitsScreen(navController, currentUser)
+        }
+
+        composable<CreateHabitRoute> {
+            CreateHabitScreen(navController, currentUser)
+        }
+
+        composable<ProfileRoute> {
+            ProfileScreen(navController, currentUser)
+        }
 
 
     }

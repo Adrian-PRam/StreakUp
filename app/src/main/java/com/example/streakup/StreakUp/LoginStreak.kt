@@ -22,13 +22,13 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,11 +44,18 @@ import com.example.streakup.ui.theme.LoginPurple
 import com.example.streakup.ui.theme.StreakBG
 import com.example.streakup.ui.theme.TextBoxColor
 import com.example.streakup.ui.theme.TextPurple
+import kotlinx.coroutines.launch
 
 @Composable
-fun LoginStreak(navegante: NavHostController){
+fun LoginStreak(
+    navegante: NavHostController,
+    onLoginSuccess: (ApiUser) -> Unit
+){
     var mail by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
 
     Column(modifier = Modifier.fillMaxSize().background(StreakBG), horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(modifier = Modifier.size(30.dp))
@@ -138,14 +145,41 @@ fun LoginStreak(navegante: NavHostController){
             }
         }
         Button(onClick = {
-            navegante.navigate(StreakUser(userName = mail))
+            if (mail.isBlank() || password.isBlank()) {
+                errorMessage = "Correo y contraseña son requeridos"
+                return@Button
+            }
+
+            scope.launch {
+                isLoading = true
+                errorMessage = ""
+                runCatching {
+                    StreakApi.login(mail.trim(), password)
+                }.onSuccess { response ->
+                    onLoginSuccess(response.user)
+                    navegante.navigate(StreakUser(userName = response.user.username))
+                }.onFailure { error ->
+                    errorMessage = error.message ?: "No se pudo iniciar sesión"
+                }
+                isLoading = false
+            }
         },
+        enabled = !isLoading,
         colors = ButtonDefaults.buttonColors(
             containerColor = LoginPurple,
             contentColor = Color.White
         )) {
-        Text(text = "Iniciar Sesion", modifier = Modifier.padding(4.dp))
+        Text(text = if (isLoading) "Entrando..." else "Iniciar Sesion", modifier = Modifier.padding(4.dp))
     }
+
+        if (errorMessage.isNotBlank()) {
+            Text(
+                errorMessage,
+                color = Color(0xFFFF8A80),
+                fontSize = 14.sp,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+        }
 
         Text("o continua con",
             fontSize = 18.sp,

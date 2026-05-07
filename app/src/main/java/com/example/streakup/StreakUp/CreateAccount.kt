@@ -23,13 +23,13 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,6 +45,7 @@ import com.example.streakup.ui.theme.LoginPurple
 import com.example.streakup.ui.theme.StreakBG
 import com.example.streakup.ui.theme.TextBoxColor
 import com.example.streakup.ui.theme.TextPurple
+import kotlinx.coroutines.launch
 
 @Composable
 fun CreateAccount(navegante: NavHostController){
@@ -53,6 +54,9 @@ fun CreateAccount(navegante: NavHostController){
     var mail by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var checked by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -216,9 +220,26 @@ fun CreateAccount(navegante: NavHostController){
 
         Button(
             onClick = {
-                navegante.navigate(Home)
+                if (name.isBlank() || mail.isBlank() || password.isBlank()) {
+                    errorMessage = "Nombre, correo y contraseña son requeridos"
+                    return@Button
+                }
+
+                scope.launch {
+                    isLoading = true
+                    errorMessage = ""
+                    runCatching {
+                        StreakApi.register(name.trim(), mail.trim(), password)
+                    }.onSuccess {
+                        navegante.navigate(Home)
+                    }.onFailure { error ->
+                        errorMessage = error.message ?: "No se pudo crear la cuenta"
+                    }
+                    isLoading = false
+                }
 
             },
+            enabled = !isLoading,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(12.dp)
@@ -228,7 +249,16 @@ fun CreateAccount(navegante: NavHostController){
                 contentColor = Color.White
             )
         ) {
-            Text("Crear cuenta")
+            Text(if (isLoading) "Creando..." else "Crear cuenta")
+        }
+
+        if (errorMessage.isNotBlank()) {
+            Text(
+                errorMessage,
+                color = Color(0xFFFF8A80),
+                fontSize = 14.sp,
+                modifier = Modifier.padding(horizontal = 12.dp)
+            )
         }
 
         Text(

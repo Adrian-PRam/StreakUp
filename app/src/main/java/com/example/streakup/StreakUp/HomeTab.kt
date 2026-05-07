@@ -47,7 +47,11 @@ import com.example.streakup.ui.theme.TextPurple
 
 
 @Composable
-fun HomeStreak(userName: StreakUser){
+fun HomeStreak(
+    navegante: NavHostController,
+    userName: StreakUser,
+    currentUser: CurrentUser?
+){
 
     Column(
         modifier = Modifier
@@ -76,7 +80,7 @@ fun HomeStreak(userName: StreakUser){
             )
 
             Text(
-                "Nombre de usuario: ${userName.userName}",
+                "Nombre de usuario: ${currentUser?.username ?: userName.userName}",
                 fontSize = 14.sp,
                 color = Color.LightGray,
                 modifier = Modifier.padding(top = 4.dp)
@@ -92,18 +96,7 @@ fun HomeStreak(userName: StreakUser){
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
 
-            Column(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(15.dp))
-                    .background(TextBoxColor)
-                    .padding(15.dp)
-                    .fillMaxWidth(0.3f),
-                horizontalAlignment = Alignment.Start
-            ) {
-                Text("🔥", fontSize = 20.sp)
-                Text("Racha", color = Color.LightGray, fontSize = 14.sp)
-                Text("15 días", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-            }
+
 
             Column(
                 modifier = Modifier
@@ -231,7 +224,8 @@ fun HomeStreak(userName: StreakUser){
                 modifier = Modifier
                     .size(35.dp)
                     .clip(RoundedCornerShape(20.dp))
-                    .background(Color(0xFF1F1F2E)),
+                    .background(Color(0xFF1F1F2E))
+                    .clickable { navegante.navigate(CreateHabitRoute) },
                 contentAlignment = Alignment.Center
             ) {
                 Text("+", color = Color.White, fontSize = 18.sp)
@@ -244,57 +238,7 @@ fun HomeStreak(userName: StreakUser){
                 .padding(10.dp)
         ) {
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(15.dp))
-                    .background(TextBoxColor)
-                    .padding(15.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
 
-                Text("🧘", fontSize = 22.sp)
-
-                Column(modifier = Modifier.padding(start = 10.dp)) {
-                    Text("Meditar", color = Color.White, fontSize = 16.sp)
-                    Text("7 días de racha", color = Color.LightGray, fontSize = 13.sp)
-                }
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.CenterEnd
-                ) {
-                    Text("✔", color = Color(0xFF6C63FF))
-                }
-            }
-
-            Spacer(modifier = Modifier.size(10.dp))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(15.dp))
-                    .background(TextBoxColor)
-                    .padding(15.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-
-                Text("📚", fontSize = 22.sp)
-
-                Column(modifier = Modifier.padding(start = 10.dp)) {
-                    Text("Leer", color = Color.White, fontSize = 16.sp)
-                    Text("12 días de racha", color = Color.LightGray, fontSize = 13.sp)
-                }
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.CenterEnd
-                ) {
-                    Text("✔", color = Color(0xFF6C63FF))
-                }
-            }
         }
 
         Spacer(modifier = Modifier.weight(1f))
@@ -313,17 +257,20 @@ fun HomeStreak(userName: StreakUser){
                 Text("Inicio", color = TextPurple, fontSize = 12.sp)
             }
 
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.clickable { navegante.navigate(HabitsRoute) }
+            ) {
                 Text("📋")
                 Text("Hábitos", color = Color.LightGray, fontSize = 12.sp)
             }
 
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("📊")
-                Text("Stats", color = Color.LightGray, fontSize = 12.sp)
-            }
 
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.clickable { navegante.navigate(ProfileRoute) }
+            ) {
                 Text("👤")
                 Text("Perfil", color = Color.LightGray, fontSize = 12.sp)
             }
