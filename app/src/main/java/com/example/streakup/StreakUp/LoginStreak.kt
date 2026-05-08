@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -56,26 +57,28 @@ fun LoginStreak(
     var errorMessage by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+    val requiredFieldsMessage = stringResource(R.string.login_required_fields)
+    val loginErrorMessage = stringResource(R.string.login_error)
 
     Column(modifier = Modifier.fillMaxSize().background(StreakBG), horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(modifier = Modifier.size(30.dp))
         Text("\uD83D\uDD25",
             fontSize = 50.sp)
 
-        Text("StreakUp",
+        Text(stringResource(R.string.brand_name),
             fontSize = 40.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White,
             modifier = Modifier.padding(7.dp))
 
-        Text("Bienvenido de vuelta",
+        Text(stringResource(R.string.login_welcome),
             fontSize = 15.sp,
             color = Color.LightGray,
             modifier = Modifier.padding(top = 7.dp, bottom = 20.dp))
 
         Column(modifier = Modifier.fillMaxWidth().height(300.dp).padding(5.dp).background(StreakBG), horizontalAlignment = Alignment.Start) {
 
-            Text("Correo",
+            Text(stringResource(R.string.email_label),
                 fontSize = 17.sp,
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
@@ -87,11 +90,11 @@ fun LoginStreak(
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Filled.Email,
-                        contentDescription = "Email"
+                        contentDescription = stringResource(R.string.email_icon_description)
                     )
                 },
                 placeholder = {
-                    Text("usuario@email.com")
+                    Text(stringResource(R.string.login_email_placeholder))
                 },
                 modifier = Modifier
                     .padding(6.dp)
@@ -106,7 +109,7 @@ fun LoginStreak(
                 )
             )
 
-            Text("Contraseña",
+            Text(stringResource(R.string.password_label),
                 fontSize = 17.sp,
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
@@ -118,7 +121,7 @@ fun LoginStreak(
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Filled.Lock,
-                        contentDescription = "Password"
+                        contentDescription = stringResource(R.string.password_icon_description)
                     )
                 },
                 placeholder = {
@@ -138,7 +141,7 @@ fun LoginStreak(
             )
 
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd){
-                Text("¿Olvidaste tu contraseña?",
+                Text(stringResource(R.string.forgot_password),
                     fontSize = 17.sp,
                     color = TextPurple,
                     modifier = Modifier.padding(10.dp))
@@ -146,7 +149,7 @@ fun LoginStreak(
         }
         Button(onClick = {
             if (mail.isBlank() || password.isBlank()) {
-                errorMessage = "Correo y contraseña son requeridos"
+                errorMessage = requiredFieldsMessage
                 return@Button
             }
 
@@ -159,7 +162,7 @@ fun LoginStreak(
                     onLoginSuccess(response.user)
                     navegante.navigate(StreakUser(userName = response.user.username))
                 }.onFailure { error ->
-                    errorMessage = error.message ?: "No se pudo iniciar sesión"
+                    errorMessage = error.message ?: loginErrorMessage
                 }
                 isLoading = false
             }
@@ -169,7 +172,10 @@ fun LoginStreak(
             containerColor = LoginPurple,
             contentColor = Color.White
         )) {
-        Text(text = if (isLoading) "Entrando..." else "Iniciar Sesion", modifier = Modifier.padding(4.dp))
+        Text(
+            text = if (isLoading) stringResource(R.string.login_button_loading) else stringResource(R.string.login_button),
+            modifier = Modifier.padding(4.dp)
+        )
     }
 
         if (errorMessage.isNotBlank()) {
@@ -181,7 +187,7 @@ fun LoginStreak(
             )
         }
 
-        Text("o continua con",
+        Text(stringResource(R.string.continue_with),
             fontSize = 18.sp,
             color = Color.LightGray,
             modifier = Modifier.padding(12.dp))
@@ -190,11 +196,11 @@ fun LoginStreak(
             Row(modifier = Modifier.clip(RoundedCornerShape(10.dp)).fillMaxWidth(0.45f).height(55.dp).background(TextBoxColor), verticalAlignment = Alignment.CenterVertically){
                 Image(
                     painter = painterResource(id = R.drawable.googlelogo),
-                    contentDescription = "My image",
+                    contentDescription = stringResource(R.string.google_logo_description),
                     modifier = Modifier.size(78.dp).padding(4.dp)
                 )
 
-                Text("Google",
+                Text(stringResource(R.string.google_label),
                     fontSize = 18.sp,
                     color = Color.LightGray)
 
@@ -202,11 +208,11 @@ fun LoginStreak(
             Row(modifier = Modifier.clip(RoundedCornerShape(10.dp)).fillMaxWidth(0.9f).height(55.dp).background(TextBoxColor), verticalAlignment = Alignment.CenterVertically){
                 Image(
                     painter = painterResource(id = R.drawable.githublogo),
-                    contentDescription = "My image",
+                    contentDescription = stringResource(R.string.github_logo_description),
                     modifier = Modifier.size(78.dp).padding(4.dp)
                 )
 
-                Text("Github",
+                Text(stringResource(R.string.github_label),
                     fontSize = 18.sp,
                     color = Color.LightGray)
 
@@ -217,11 +223,11 @@ fun LoginStreak(
         Spacer(modifier = Modifier.size(15.dp))
 
         Row(modifier = Modifier.fillMaxWidth().height(50.dp), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
-            Text("¿No tienes cuenta?",
+            Text(stringResource(R.string.no_account),
                 fontSize = 17.sp,
                 color = Color.White,)
 
-            Text("Crear cuenta",
+            Text(stringResource(R.string.create_account_link),
                 fontSize = 17.sp,
                 color = TextPurple,
                 fontWeight = FontWeight.Bold,

@@ -38,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -61,6 +62,8 @@ fun HomeStreak(
     var habitsMessage by remember { mutableStateOf("") }
     var isLoadingHabits by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+    val loadHabitsErrorMessage = stringResource(R.string.load_habits_error)
+    val completeHabitErrorMessage = stringResource(R.string.complete_habit_error)
 
     fun loadHabits() {
         val userId = currentUser?.id ?: return
@@ -72,7 +75,7 @@ fun HomeStreak(
             }.onSuccess { loadedHabits ->
                 habits = loadedHabits
             }.onFailure { error ->
-                habitsMessage = error.message ?: "No se pudieron cargar los hábitos"
+                habitsMessage = error.message ?: loadHabitsErrorMessage
             }
             isLoadingHabits = false
         }
@@ -97,21 +100,21 @@ fun HomeStreak(
         ) {
 
             Text(
-                "Streak Up",
+                stringResource(R.string.brand_name_spaced),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White
             )
 
             Text(
-                "lunes, 16 de febrero",
+                stringResource(R.string.home_sample_date),
                 fontSize = 14.sp,
                 color = Color.LightGray,
                 modifier = Modifier.padding(top = 4.dp)
             )
 
             Text(
-                "Nombre de usuario: ${currentUser?.username ?: userName.userName}",
+                stringResource(R.string.username_label_format, currentUser?.username ?: userName.userName),
                 fontSize = 14.sp,
                 color = Color.LightGray,
                 modifier = Modifier.padding(top = 4.dp)
@@ -136,7 +139,7 @@ fun HomeStreak(
                     horizontalAlignment = Alignment.Start
                 ) {
                     Text("🎯", fontSize = 20.sp)
-                    Text("Hoy", color = Color.LightGray, fontSize = 14.sp)
+                    Text(stringResource(R.string.today_label), color = Color.LightGray, fontSize = 14.sp)
                     Text("3/4", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 }
 
@@ -149,7 +152,7 @@ fun HomeStreak(
                     horizontalAlignment = Alignment.Start
                 ) {
                     Text("🏆", fontSize = 20.sp)
-                    Text("Tasa", color = Color.LightGray, fontSize = 14.sp)
+                    Text(stringResource(R.string.rate_label), color = Color.LightGray, fontSize = 14.sp)
                     Text("75%", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 }
             }
@@ -164,7 +167,7 @@ fun HomeStreak(
             ) {
 
                 Text(
-                    "Modo Pomodoro",
+                    stringResource(R.string.pomodoro_mode),
                     color = Color.White,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
@@ -185,7 +188,7 @@ fun HomeStreak(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text("🔥", fontSize = 22.sp)
-                        Text("Fuego", color = Color(0xFFFF7A00))
+                        Text(stringResource(R.string.fire_label), color = Color(0xFFFF7A00))
                     }
 
                     Column(
@@ -197,7 +200,7 @@ fun HomeStreak(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text("🕯️", fontSize = 22.sp)
-                        Text("Vela", color = Color(0xFFFF4DA6))
+                        Text(stringResource(R.string.candle_label), color = Color(0xFFFF4DA6))
                     }
                 }
 
@@ -217,7 +220,7 @@ fun HomeStreak(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text("🧊", fontSize = 22.sp)
-                        Text("Hielo", color = Color(0xFF4FC3F7))
+                        Text(stringResource(R.string.ice_label), color = Color(0xFF4FC3F7))
                     }
 
                     Column(
@@ -229,7 +232,7 @@ fun HomeStreak(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text("⏳", fontSize = 22.sp)
-                        Text("Reloj", color = Color(0xFFFFB74D))
+                        Text(stringResource(R.string.clock_label), color = Color(0xFFFFB74D))
                     }
                 }
             }
@@ -243,7 +246,7 @@ fun HomeStreak(
             ) {
 
                 Text(
-                    "Hoy",
+                    stringResource(R.string.today_label),
                     color = Color.White,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
@@ -276,7 +279,7 @@ fun HomeStreak(
                             }.onSuccess {
                                 loadHabits()
                             }.onFailure { error ->
-                                habitsMessage = error.message ?: "No se pudo completar el hábito"
+                                habitsMessage = error.message ?: completeHabitErrorMessage
                             }
                         }
                     }
@@ -295,7 +298,7 @@ fun HomeStreak(
 
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text("🏠")
-                Text("Inicio", color = TextPurple, fontSize = 12.sp)
+                Text(stringResource(R.string.home_tab), color = TextPurple, fontSize = 12.sp)
             }
 
             Column(
@@ -303,7 +306,7 @@ fun HomeStreak(
                 modifier = Modifier.clickable { navegante.navigate(HabitsRoute) }
             ) {
                 Text("📋")
-                Text("Hábitos", color = Color.LightGray, fontSize = 12.sp)
+                Text(stringResource(R.string.habits_tab), color = Color.LightGray, fontSize = 12.sp)
             }
 
 
@@ -313,7 +316,7 @@ fun HomeStreak(
                 modifier = Modifier.clickable { navegante.navigate(ProfileRoute) }
             ) {
                 Text("👤")
-                Text("Perfil", color = Color.LightGray, fontSize = 12.sp)
+                Text(stringResource(R.string.profile_tab), color = Color.LightGray, fontSize = 12.sp)
             }
         }
     }
@@ -331,7 +334,7 @@ private fun HomeHabitsList(
         when {
             currentUser == null -> {
                 Text(
-                    "Inicia sesión para ver tus hábitos",
+                    stringResource(R.string.login_to_view_habits),
                     color = Color.LightGray,
                     modifier = Modifier.padding(top = 10.dp)
                 )
@@ -348,7 +351,7 @@ private fun HomeHabitsList(
 
             isLoading -> {
                 Text(
-                    "Cargando...",
+                    stringResource(R.string.loading),
                     color = Color.LightGray,
                     modifier = Modifier.padding(top = 10.dp)
                 )
@@ -356,7 +359,7 @@ private fun HomeHabitsList(
 
             habits.isEmpty() -> {
                 Text(
-                    "No hay hábitos todavía",
+                    stringResource(R.string.no_habits_yet),
                     color = Color.LightGray,
                     modifier = Modifier.padding(top = 10.dp)
                 )
@@ -394,7 +397,7 @@ private fun HomeHabitRow(habit: Habit, onComplete: () -> Unit) {
             )
         }
         Text(
-            "Completado ${habit.completedCount} veces",
+            stringResource(R.string.habit_completed_count, habit.completedCount),
             color = Color.LightGray,
             fontSize = 14.sp,
             modifier = Modifier.padding(top = 6.dp)
@@ -406,7 +409,7 @@ private fun HomeHabitRow(habit: Habit, onComplete: () -> Unit) {
                 .fillMaxWidth()
                 .padding(top = 10.dp)
         ) {
-            Text("Marcar completado")
+            Text(stringResource(R.string.mark_completed))
         }
     }
 }

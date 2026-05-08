@@ -1,0 +1,81 @@
+<resources>
+    <string name="app_name">StreakUp</string>
+    <string name="brand_name">StreakUp</string>
+    <string name="brand_name_spaced">Streak Up</string>
+    <string name="email_label">Email</string>
+    <string name="password_label">Password</string>
+    <string name="google_label">Google</string>
+    <string name="github_label">GitHub</string>
+    <string name="email_icon_description">Email</string>
+    <string name="password_icon_description">Password</string>
+    <string name="google_logo_description">Google logo</string>
+    <string name="github_logo_description">GitHub logo</string>
+
+    <string name="login_welcome">Welcome back</string>
+    <string name="login_email_placeholder">user@email.com</string>
+    <string name="forgot_password">Forgot your password?</string>
+    <string name="login_required_fields">Email and password are required</string>
+    <string name="login_error">Could not sign in</string>
+    <string name="login_button">Sign in</string>
+    <string name="login_button_loading">Signing in...</string>
+    <string name="continue_with">or continue with</string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="create_account_link">Create account</string>
+
+    <string name="create_account_title">Create account</string>
+    <string name="create_account_subtitle">Start your habit journey</string>
+    <string name="name_label">Name</string>
+    <string name="name_placeholder">Your name</string>
+    <string name="signup_email_placeholder">your@email.com</string>
+    <string name="signup_terms_prefix">"I accept the "</string>
+    <string name="terms_and_conditions">terms and conditions</string>
+    <string name="signup_privacy_connector">" and the "</string>
+    <string name="privacy_policy">privacy policy</string>
+    <string name="signup_required_fields">Name, email, and password are required</string>
+    <string name="signup_error">Could not create the account</string>
+    <string name="signup_button_loading">Creating...</string>
+    <string name="already_have_account">Already have an account?</string>
+    <string name="login_link">" Sign in"</string>
+
+    <string name="home_sample_date">Monday, February 16</string>
+    <string name="username_label_format">Username: %1$s</string>
+    <string name="today_label">Today</string>
+    <string name="rate_label">Rate</string>
+    <string name="pomodoro_mode">Pomodoro Mode</string>
+    <string name="fire_label">Fire</string>
+    <string name="candle_label">Candle</string>
+    <string name="ice_label">Ice</string>
+    <string name="clock_label">Clock</string>
+    <string name="home_tab">Home</string>
+    <string name="habits_tab">Habits</string>
+    <string name="profile_tab">Profile</string>
+
+    <string name="habits_title">Habits</string>
+    <string name="no_user">No user</string>
+    <string name="login_to_view_habits">Sign in to view your habits</string>
+    <string name="go_to_login">Go to login</string>
+    <string name="create_habit">Create habit</string>
+    <string name="loading">Loading...</string>
+    <string name="no_habits_yet">No habits yet</string>
+    <string name="habit_name_placeholder">Habit name</string>
+    <string name="description_placeholder">Description</string>
+    <string name="login_to_create_habits">Sign in to create habits</string>
+    <string name="habit_name_required">Name is required</string>
+    <string name="save_habit">Save habit</string>
+    <string name="saving">Saving...</string>
+    <string name="back">Back</string>
+    <string name="habit_completed_count">Completed %1$d times</string>
+    <string name="mark_completed">Mark completed</string>
+    <string name="load_habits_error">Could not load habits</string>
+    <string name="complete_habit_error">Could not complete the habit</string>
+    <string name="create_habit_error">Could not create the habit</string>
+
+    <string name="profile_title">Profile</string>
+    <string name="login_to_view_profile">Sign in to view your profile</string>
+    <string name="load_profile_error">Could not load profile</string>
+    <string name="profile_username">User</string>
+    <string name="profile_email">Email</string>
+    <string name="profile_password">Password</string>
+    <string name="profile_habits_created">Habits created</string>
+    <string name="profile_habits_completed">Habits completed</string>
+</resources>

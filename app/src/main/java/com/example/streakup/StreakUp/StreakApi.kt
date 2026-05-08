@@ -140,7 +140,8 @@ object StreakApi {
             val responseBody = stream?.bufferedReader()?.use { it.readText() }.orEmpty()
 
             if (responseCode !in 200..299) {
-                throw Exception(readApiError(responseBody))
+                val apiError = readApiError(responseBody)
+                throw if (apiError == null) Exception() else Exception(apiError)
             }
 
             apiJson.decodeFromString<T>(responseBody)
@@ -151,8 +152,8 @@ object StreakApi {
 
     fun currentBaseUrl(): String = BASE_URL
 
-    private fun readApiError(body: String): String {
-        if (body.isBlank()) return "Error del servidor"
+    private fun readApiError(body: String): String? {
+        if (body.isBlank()) return null
 
         return runCatching {
             apiJson.parseToJsonElement(body)

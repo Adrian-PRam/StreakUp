@@ -30,10 +30,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.streakup.R
 import com.example.streakup.ui.theme.LoginPurple
 import com.example.streakup.ui.theme.StreakBG
 import com.example.streakup.ui.theme.TextBoxColor
@@ -46,6 +48,8 @@ fun HabitsScreen(navegante: NavHostController, currentUser: CurrentUser?) {
     var message by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+    val loadHabitsErrorMessage = stringResource(R.string.load_habits_error)
+    val completeHabitErrorMessage = stringResource(R.string.complete_habit_error)
 
     fun loadHabits() {
         val userId = currentUser?.id ?: return
@@ -57,7 +61,7 @@ fun HabitsScreen(navegante: NavHostController, currentUser: CurrentUser?) {
             }.onSuccess { loadedHabits ->
                 habits = loadedHabits
             }.onFailure { error ->
-                message = error.message ?: "No se pudieron cargar los hábitos"
+                message = error.message ?: loadHabitsErrorMessage
             }
             isLoading = false
         }
@@ -78,9 +82,9 @@ fun HabitsScreen(navegante: NavHostController, currentUser: CurrentUser?) {
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp)
         ) {
-            Text("Hábitos", color = Color.White, fontSize = 26.sp, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.habits_title), color = Color.White, fontSize = 26.sp, fontWeight = FontWeight.Bold)
             Text(
-                currentUser?.username ?: "Sin usuario",
+                currentUser?.username ?: stringResource(R.string.no_user),
                 color = Color.LightGray,
                 fontSize = 14.sp,
                 modifier = Modifier.padding(top = 4.dp, bottom = 16.dp)
@@ -88,10 +92,10 @@ fun HabitsScreen(navegante: NavHostController, currentUser: CurrentUser?) {
 
             val user = currentUser
             if (user == null) {
-                Text("Inicia sesión para ver tus hábitos", color = Color.LightGray)
+                Text(stringResource(R.string.login_to_view_habits), color = Color.LightGray)
                 Spacer(modifier = Modifier.size(12.dp))
                 Button(onClick = { navegante.navigate(Home) }) {
-                    Text("Ir a login")
+                    Text(stringResource(R.string.go_to_login))
                 }
                 return@Column
             }
@@ -101,7 +105,7 @@ fun HabitsScreen(navegante: NavHostController, currentUser: CurrentUser?) {
                 colors = ButtonDefaults.buttonColors(containerColor = LoginPurple),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Crear hábito")
+                Text(stringResource(R.string.create_habit))
             }
 
             if (message.isNotBlank()) {
@@ -114,9 +118,9 @@ fun HabitsScreen(navegante: NavHostController, currentUser: CurrentUser?) {
             }
 
             if (isLoading) {
-                Text("Cargando...", color = Color.LightGray, modifier = Modifier.padding(top = 16.dp))
+                Text(stringResource(R.string.loading), color = Color.LightGray, modifier = Modifier.padding(top = 16.dp))
             } else if (habits.isEmpty()) {
-                Text("No hay hábitos todavía", color = Color.LightGray, modifier = Modifier.padding(top = 16.dp))
+                Text(stringResource(R.string.no_habits_yet), color = Color.LightGray, modifier = Modifier.padding(top = 16.dp))
             } else {
                 habits.forEach { habit ->
                     HabitRow(
@@ -129,7 +133,7 @@ fun HabitsScreen(navegante: NavHostController, currentUser: CurrentUser?) {
                                 }.onSuccess {
                                     loadHabits()
                                 }.onFailure { error ->
-                                    message = error.message ?: "No se pudo completar el hábito"
+                                    message = error.message ?: completeHabitErrorMessage
                                 }
                             }
                         }
@@ -149,6 +153,9 @@ fun CreateHabitScreen(navegante: NavHostController, currentUser: CurrentUser?) {
     var message by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+    val loginToCreateHabitsMessage = stringResource(R.string.login_to_create_habits)
+    val habitNameRequiredMessage = stringResource(R.string.habit_name_required)
+    val createHabitErrorMessage = stringResource(R.string.create_habit_error)
 
     Column(
         modifier = Modifier
@@ -156,9 +163,9 @@ fun CreateHabitScreen(navegante: NavHostController, currentUser: CurrentUser?) {
             .background(StreakBG)
             .padding(16.dp)
     ) {
-        Text("Crear hábito", color = Color.White, fontSize = 26.sp, fontWeight = FontWeight.Bold)
+        Text(stringResource(R.string.create_habit), color = Color.White, fontSize = 26.sp, fontWeight = FontWeight.Bold)
         Text(
-            currentUser?.username ?: "Sin usuario",
+            currentUser?.username ?: stringResource(R.string.no_user),
             color = Color.LightGray,
             fontSize = 14.sp,
             modifier = Modifier.padding(top = 4.dp, bottom = 20.dp)
@@ -167,7 +174,7 @@ fun CreateHabitScreen(navegante: NavHostController, currentUser: CurrentUser?) {
         OutlinedTextField(
             value = name,
             onValueChange = { name = it },
-            placeholder = { Text("Nombre del hábito") },
+            placeholder = { Text(stringResource(R.string.habit_name_placeholder)) },
             modifier = Modifier.fillMaxWidth(),
             colors = streakTextFieldColors()
         )
@@ -177,7 +184,7 @@ fun CreateHabitScreen(navegante: NavHostController, currentUser: CurrentUser?) {
         OutlinedTextField(
             value = description,
             onValueChange = { description = it },
-            placeholder = { Text("Descripción") },
+            placeholder = { Text(stringResource(R.string.description_placeholder)) },
             modifier = Modifier.fillMaxWidth(),
             colors = streakTextFieldColors()
         )
@@ -197,11 +204,11 @@ fun CreateHabitScreen(navegante: NavHostController, currentUser: CurrentUser?) {
             onClick = {
                 val userId = currentUser?.id
                 if (userId == null) {
-                    message = "Inicia sesión para crear hábitos"
+                    message = loginToCreateHabitsMessage
                     return@Button
                 }
                 if (name.isBlank()) {
-                    message = "El nombre es requerido"
+                    message = habitNameRequiredMessage
                     return@Button
                 }
 
@@ -213,7 +220,7 @@ fun CreateHabitScreen(navegante: NavHostController, currentUser: CurrentUser?) {
                     }.onSuccess {
                         navegante.navigate(HabitsRoute)
                     }.onFailure { error ->
-                        message = error.message ?: "No se pudo crear el hábito"
+                        message = error.message ?: createHabitErrorMessage
                     }
                     isLoading = false
                 }
@@ -222,7 +229,7 @@ fun CreateHabitScreen(navegante: NavHostController, currentUser: CurrentUser?) {
             colors = ButtonDefaults.buttonColors(containerColor = LoginPurple),
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(if (isLoading) "Guardando..." else "Guardar hábito")
+            Text(if (isLoading) stringResource(R.string.saving) else stringResource(R.string.save_habit))
         }
 
         Spacer(modifier = Modifier.size(10.dp))
@@ -232,7 +239,7 @@ fun CreateHabitScreen(navegante: NavHostController, currentUser: CurrentUser?) {
             colors = ButtonDefaults.buttonColors(containerColor = TextBoxColor),
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Volver")
+            Text(stringResource(R.string.back))
         }
     }
 }
@@ -241,11 +248,13 @@ fun CreateHabitScreen(navegante: NavHostController, currentUser: CurrentUser?) {
 fun ProfileScreen(navegante: NavHostController, currentUser: CurrentUser?) {
     var profile by remember { mutableStateOf<ProfileResponse?>(null) }
     var message by remember { mutableStateOf("") }
+    val loginToViewProfileMessage = stringResource(R.string.login_to_view_profile)
+    val loadProfileErrorMessage = stringResource(R.string.load_profile_error)
 
     LaunchedEffect(currentUser?.id) {
         val userId = currentUser?.id
         if (userId == null) {
-            message = "Inicia sesión para ver tu perfil"
+            message = loginToViewProfileMessage
             return@LaunchedEffect
         }
 
@@ -255,7 +264,7 @@ fun ProfileScreen(navegante: NavHostController, currentUser: CurrentUser?) {
             profile = loadedProfile
             message = ""
         }.onFailure { error ->
-            message = error.message ?: "No se pudo cargar el perfil"
+            message = error.message ?: loadProfileErrorMessage
         }
     }
 
@@ -269,7 +278,7 @@ fun ProfileScreen(navegante: NavHostController, currentUser: CurrentUser?) {
                 .weight(1f)
                 .padding(16.dp)
         ) {
-            Text("Perfil", color = Color.White, fontSize = 26.sp, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.profile_title), color = Color.White, fontSize = 26.sp, fontWeight = FontWeight.Bold)
 
             if (message.isNotBlank()) {
                 Text(
@@ -281,11 +290,11 @@ fun ProfileScreen(navegante: NavHostController, currentUser: CurrentUser?) {
             }
 
             profile?.let { data ->
-                ProfileLine("Usuario", data.username)
-                ProfileLine("Correo", data.email)
-                ProfileLine("Contraseña", data.password)
-                ProfileLine("Hábitos creados", data.habitsCreated.toString())
-                ProfileLine("Hábitos completados", data.habitsCompleted.toString())
+                ProfileLine(stringResource(R.string.profile_username), data.username)
+                ProfileLine(stringResource(R.string.profile_email), data.email)
+                ProfileLine(stringResource(R.string.profile_password), data.password)
+                ProfileLine(stringResource(R.string.profile_habits_created), data.habitsCreated.toString())
+                ProfileLine(stringResource(R.string.profile_habits_completed), data.habitsCompleted.toString())
             }
         }
 
@@ -308,7 +317,7 @@ private fun HabitRow(habit: Habit, onComplete: () -> Unit) {
             Text(habit.description, color = Color.LightGray, fontSize = 14.sp, modifier = Modifier.padding(top = 4.dp))
         }
         Text(
-            "Completado ${habit.completedCount} veces",
+            stringResource(R.string.habit_completed_count, habit.completedCount),
             color = Color.LightGray,
             fontSize = 14.sp,
             modifier = Modifier.padding(top = 6.dp)
@@ -320,7 +329,7 @@ private fun HabitRow(habit: Habit, onComplete: () -> Unit) {
                 .fillMaxWidth()
                 .padding(top = 10.dp)
         ) {
-            Text("Marcar completado")
+            Text(stringResource(R.string.mark_completed))
         }
     }
 }
@@ -355,7 +364,7 @@ private fun BottomNavigation(navegante: NavHostController, selected: String, hom
             modifier = Modifier.clickable { navegante.navigate(StreakUser(userName = homeUserName)) }
         ) {
             Text("🏠")
-            Text("Inicio", color = if (selected == "home") TextPurple else Color.LightGray, fontSize = 12.sp)
+            Text(stringResource(R.string.home_tab), color = if (selected == "home") TextPurple else Color.LightGray, fontSize = 12.sp)
         }
 
         Column(
@@ -363,7 +372,7 @@ private fun BottomNavigation(navegante: NavHostController, selected: String, hom
             modifier = Modifier.clickable { navegante.navigate(HabitsRoute) }
         ) {
             Text("📋")
-            Text("Hábitos", color = if (selected == "habits") TextPurple else Color.LightGray, fontSize = 12.sp)
+            Text(stringResource(R.string.habits_tab), color = if (selected == "habits") TextPurple else Color.LightGray, fontSize = 12.sp)
         }
 
 
@@ -373,7 +382,7 @@ private fun BottomNavigation(navegante: NavHostController, selected: String, hom
             modifier = Modifier.clickable { navegante.navigate(ProfileRoute) }
         ) {
             Text("👤")
-            Text("Perfil", color = if (selected == "profile") TextPurple else Color.LightGray, fontSize = 12.sp)
+            Text(stringResource(R.string.profile_tab), color = if (selected == "profile") TextPurple else Color.LightGray, fontSize = 12.sp)
         }
     }
 }

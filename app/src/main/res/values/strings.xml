@@ -1,3 +1,81 @@
 <resources>
     <string name="app_name">StreakUp</string>
+    <string name="brand_name">StreakUp</string>
+    <string name="brand_name_spaced">Streak Up</string>
+    <string name="email_label">Correo</string>
+    <string name="password_label">Contraseña</string>
+    <string name="google_label">Google</string>
+    <string name="github_label">GitHub</string>
+    <string name="email_icon_description">Correo</string>
+    <string name="password_icon_description">Contraseña</string>
+    <string name="google_logo_description">Logo de Google</string>
+    <string name="github_logo_description">Logo de GitHub</string>
+
+    <string name="login_welcome">Bienvenido de vuelta</string>
+    <string name="login_email_placeholder">usuario@email.com</string>
+    <string name="forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="login_required_fields">Correo y contraseña son requeridos</string>
+    <string name="login_error">No se pudo iniciar sesión</string>
+    <string name="login_button">Iniciar sesión</string>
+    <string name="login_button_loading">Entrando...</string>
+    <string name="continue_with">o continúa con</string>
+    <string name="no_account">¿No tienes cuenta?</string>
+    <string name="create_account_link">Crear cuenta</string>
+
+    <string name="create_account_title">Crear cuenta</string>
+    <string name="create_account_subtitle">Comienza tu viaje de hábitos</string>
+    <string name="name_label">Nombre</string>
+    <string name="name_placeholder">Tu nombre</string>
+    <string name="signup_email_placeholder">tu@email.com</string>
+    <string name="signup_terms_prefix">"Acepto los "</string>
+    <string name="terms_and_conditions">términos y condiciones</string>
+    <string name="signup_privacy_connector">" y la "</string>
+    <string name="privacy_policy">política de privacidad</string>
+    <string name="signup_required_fields">Nombre, correo y contraseña son requeridos</string>
+    <string name="signup_error">No se pudo crear la cuenta</string>
+    <string name="signup_button_loading">Creando...</string>
+    <string name="already_have_account">¿Ya tienes cuenta?</string>
+    <string name="login_link">" Iniciar sesión"</string>
+
+    <string name="home_sample_date">lunes, 16 de febrero</string>
+    <string name="username_label_format">Nombre de usuario: %1$s</string>
+    <string name="today_label">Hoy</string>
+    <string name="rate_label">Tasa</string>
+    <string name="pomodoro_mode">Modo Pomodoro</string>
+    <string name="fire_label">Fuego</string>
+    <string name="candle_label">Vela</string>
+    <string name="ice_label">Hielo</string>
+    <string name="clock_label">Reloj</string>
+    <string name="home_tab">Inicio</string>
+    <string name="habits_tab">Hábitos</string>
+    <string name="profile_tab">Perfil</string>
+
+    <string name="habits_title">Hábitos</string>
+    <string name="no_user">Sin usuario</string>
+    <string name="login_to_view_habits">Inicia sesión para ver tus hábitos</string>
+    <string name="go_to_login">Ir a login</string>
+    <string name="create_habit">Crear hábito</string>
+    <string name="loading">Cargando...</string>
+    <string name="no_habits_yet">No hay hábitos todavía</string>
+    <string name="habit_name_placeholder">Nombre del hábito</string>
+    <string name="description_placeholder">Descripción</string>
+    <string name="login_to_create_habits">Inicia sesión para crear hábitos</string>
+    <string name="habit_name_required">El nombre es requerido</string>
+    <string name="save_habit">Guardar hábito</string>
+    <string name="saving">Guardando...</string>
+    <string name="back">Volver</string>
+    <string name="habit_completed_count">Completado %1$d veces</string>
+    <string name="mark_completed">Marcar completado</string>
+    <string name="load_habits_error">No se pudieron cargar los hábitos</string>
+    <string name="complete_habit_error">No se pudo completar el hábito</string>
+    <string name="create_habit_error">No se pudo crear el hábito</string>
+
+    <string name="profile_title">Perfil</string>
+    <string name="login_to_view_profile">Inicia sesión para ver tu perfil</string>
+    <string name="load_profile_error">No se pudo cargar el perfil</string>
+    <string name="profile_username">Usuario</string>
+    <string name="profile_email">Correo</string>
+    <string name="profile_password">Contraseña</string>
+    <string name="profile_habits_created">Hábitos creados</string>
+    <string name="profile_habits_completed">Hábitos completados</string>
 </resources>

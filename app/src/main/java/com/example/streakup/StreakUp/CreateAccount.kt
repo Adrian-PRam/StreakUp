@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -57,6 +58,8 @@ fun CreateAccount(navegante: NavHostController){
     var errorMessage by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+    val requiredFieldsMessage = stringResource(R.string.signup_required_fields)
+    val createAccountErrorMessage = stringResource(R.string.signup_error)
 
     Column(
         modifier = Modifier
@@ -68,14 +71,14 @@ fun CreateAccount(navegante: NavHostController){
         Spacer(modifier = Modifier.size(40.dp))
 
         Text(
-            "Crear cuenta",
+            stringResource(R.string.create_account_title),
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White
         )
 
         Text(
-            "Comienza tu viaje de hábitos",
+            stringResource(R.string.create_account_subtitle),
             fontSize = 14.sp,
             color = Color.LightGray,
             modifier = Modifier.padding(top = 5.dp, bottom = 25.dp)
@@ -89,7 +92,7 @@ fun CreateAccount(navegante: NavHostController){
         ) {
 
             Text(
-                "Nombre",
+                stringResource(R.string.name_label),
                 fontSize = 16.sp,
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
@@ -102,11 +105,11 @@ fun CreateAccount(navegante: NavHostController){
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Filled.Email,
-                        contentDescription = ""
+                        contentDescription = stringResource(R.string.email_icon_description)
                     )
                 },
                 placeholder = {
-                    Text("Tu nombre")
+                    Text(stringResource(R.string.name_placeholder))
                 },
                 modifier = Modifier
                     .padding(6.dp)
@@ -120,7 +123,7 @@ fun CreateAccount(navegante: NavHostController){
             )
 
             Text(
-                "Correo",
+                stringResource(R.string.email_label),
                 fontSize = 16.sp,
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
@@ -133,11 +136,11 @@ fun CreateAccount(navegante: NavHostController){
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Filled.Email,
-                        contentDescription = ""
+                        contentDescription = stringResource(R.string.email_icon_description)
                     )
                 },
                 placeholder = {
-                    Text("tu@email.com")
+                    Text(stringResource(R.string.signup_email_placeholder))
                 },
                 modifier = Modifier
                     .padding(6.dp)
@@ -151,7 +154,7 @@ fun CreateAccount(navegante: NavHostController){
             )
 
             Text(
-                "Contraseña",
+                stringResource(R.string.password_label),
                 fontSize = 16.sp,
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
@@ -164,7 +167,7 @@ fun CreateAccount(navegante: NavHostController){
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Filled.Lock,
-                        contentDescription = ""
+                        contentDescription = stringResource(R.string.password_icon_description)
                     )
                 },
                 placeholder = {
@@ -193,25 +196,25 @@ fun CreateAccount(navegante: NavHostController){
                 )
 
                 Text(
-                    "Acepto los ",
+                    stringResource(R.string.signup_terms_prefix),
                     fontSize = 14.sp,
                     color = Color.LightGray
                 )
 
                 Text(
-                    "términos y condiciones",
+                    stringResource(R.string.terms_and_conditions),
                     fontSize = 14.sp,
                     color = TextPurple
                 )
 
                 Text(
-                    " y la ",
+                    stringResource(R.string.signup_privacy_connector),
                     fontSize = 14.sp,
                     color = Color.LightGray
                 )
 
                 Text(
-                    "política de privacidad",
+                    stringResource(R.string.privacy_policy),
                     fontSize = 14.sp,
                     color = TextPurple
                 )
@@ -221,7 +224,7 @@ fun CreateAccount(navegante: NavHostController){
         Button(
             onClick = {
                 if (name.isBlank() || mail.isBlank() || password.isBlank()) {
-                    errorMessage = "Nombre, correo y contraseña son requeridos"
+                    errorMessage = requiredFieldsMessage
                     return@Button
                 }
 
@@ -233,7 +236,7 @@ fun CreateAccount(navegante: NavHostController){
                     }.onSuccess {
                         navegante.navigate(Home)
                     }.onFailure { error ->
-                        errorMessage = error.message ?: "No se pudo crear la cuenta"
+                        errorMessage = error.message ?: createAccountErrorMessage
                     }
                     isLoading = false
                 }
@@ -249,7 +252,7 @@ fun CreateAccount(navegante: NavHostController){
                 contentColor = Color.White
             )
         ) {
-            Text(if (isLoading) "Creando..." else "Crear cuenta")
+            Text(if (isLoading) stringResource(R.string.signup_button_loading) else stringResource(R.string.create_account_title))
         }
 
         if (errorMessage.isNotBlank()) {
@@ -262,7 +265,7 @@ fun CreateAccount(navegante: NavHostController){
         }
 
         Text(
-            "o continúa con",
+            stringResource(R.string.continue_with),
             fontSize = 16.sp,
             color = Color.LightGray,
             modifier = Modifier.padding(12.dp)
@@ -286,14 +289,14 @@ fun CreateAccount(navegante: NavHostController){
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.googlelogo),
-                    contentDescription = "",
+                    contentDescription = stringResource(R.string.google_logo_description),
                     modifier = Modifier
                         .size(60.dp)
                         .padding(6.dp)
                 )
 
                 Text(
-                    "Google",
+                    stringResource(R.string.google_label),
                     fontSize = 16.sp,
                     color = Color.LightGray
                 )
@@ -309,14 +312,14 @@ fun CreateAccount(navegante: NavHostController){
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.githublogo),
-                    contentDescription = "",
+                    contentDescription = stringResource(R.string.github_logo_description),
                     modifier = Modifier
                         .size(60.dp)
                         .padding(6.dp)
                 )
 
                 Text(
-                    "GitHub",
+                    stringResource(R.string.github_label),
                     fontSize = 16.sp,
                     color = Color.LightGray
                 )
@@ -333,13 +336,13 @@ fun CreateAccount(navegante: NavHostController){
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                "¿Ya tienes cuenta?",
+                stringResource(R.string.already_have_account),
                 fontSize = 16.sp,
                 color = Color.White
             )
 
             Text(
-                " Iniciar sesión",
+                stringResource(R.string.login_link),
                 fontSize = 16.sp,
                 color = TextPurple,
                 fontWeight = FontWeight.Bold,
