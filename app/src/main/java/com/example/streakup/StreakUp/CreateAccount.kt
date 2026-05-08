@@ -12,8 +12,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
@@ -64,7 +67,9 @@ fun CreateAccount(navegante: NavHostController){
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(StreakBG),
+            .background(StreakBG)
+            .safeDrawingPadding()
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -196,27 +201,13 @@ fun CreateAccount(navegante: NavHostController){
                 )
 
                 Text(
-                    stringResource(R.string.signup_terms_prefix),
+                    text = stringResource(R.string.signup_terms_prefix) + " " +
+                        stringResource(R.string.terms_and_conditions) + " " +
+                        stringResource(R.string.signup_privacy_connector) + " " +
+                        stringResource(R.string.privacy_policy),
                     fontSize = 14.sp,
-                    color = Color.LightGray
-                )
-
-                Text(
-                    stringResource(R.string.terms_and_conditions),
-                    fontSize = 14.sp,
-                    color = TextPurple
-                )
-
-                Text(
-                    stringResource(R.string.signup_privacy_connector),
-                    fontSize = 14.sp,
-                    color = Color.LightGray
-                )
-
-                Text(
-                    stringResource(R.string.privacy_policy),
-                    fontSize = 14.sp,
-                    color = TextPurple
+                    color = Color.LightGray,
+                    modifier = Modifier.weight(1f)
                 )
             }
         }
@@ -282,7 +273,7 @@ fun CreateAccount(navegante: NavHostController){
             Row(
                 modifier = Modifier
                     .clip(RoundedCornerShape(10.dp))
-                    .fillMaxWidth(0.45f)
+                    .weight(1f)
                     .height(55.dp)
                     .background(TextBoxColor),
                 verticalAlignment = Alignment.CenterVertically
@@ -305,7 +296,7 @@ fun CreateAccount(navegante: NavHostController){
             Row(
                 modifier = Modifier
                     .clip(RoundedCornerShape(10.dp))
-                    .fillMaxWidth(0.9f)
+                    .weight(1f)
                     .height(55.dp)
                     .background(TextBoxColor),
                 verticalAlignment = Alignment.CenterVertically

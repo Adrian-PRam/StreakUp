@@ -2,7 +2,7 @@ package com.example.streakup.StreakUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
@@ -38,7 +38,7 @@ data class CurrentUser(
     val username: String,
     val email: String,
     val password: String
-)
+) : java.io.Serializable
 
 
 @Preview(showBackground = true)
@@ -46,7 +46,7 @@ data class CurrentUser(
 
 fun NavManager() {
     val navController = rememberNavController()
-    var currentUser by remember { mutableStateOf<CurrentUser?>(null) }
+    var currentUser by rememberSaveable { mutableStateOf<CurrentUser?>(null) }
 
     NavHost(navController, startDestination = Home){
 

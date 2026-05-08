@@ -12,8 +12,10 @@ import kotlinx.serialization.json.jsonPrimitive
 import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.URL
+import java.net.URLEncoder
 
 private const val BASE_URL = "http://10.0.2.2:3000"
+private const val WORLD_TIME_BASE_URL = "https://worldtimeapi.org/api/timezone"
 
 private val apiJson = Json {
     ignoreUnknownKeys = true
@@ -75,6 +77,11 @@ data class ProfileResponse(
     @SerialName("habits_completed") val habitsCompleted: Int
 )
 
+@Serializable
+data class WorldTimeResponse(
+    val datetime: String
+)
+
 object StreakApi {
     suspend fun register(username: String, email: String, password: String): AuthResponse {
         return request(
@@ -112,12 +119,37 @@ object StreakApi {
         return request(path = "/users/$userId/profile", method = "GET")
     }
 
+    suspend fun getWorldTime(timezone: String): WorldTimeResponse {
+        val encodedTimezone = timezone
+            .split("/")
+            .joinToString("/") { segment ->
+                URLEncoder.encode(segment, "UTF-8").replace("+", "%20")
+            }
+        return requestUrl(url = "$WORLD_TIME_BASE_URL/$encodedTimezone", method = "GET")
+    }
+
     private suspend inline fun <reified T> request(
         path: String,
         method: String,
         body: String? = null
     ): T = withContext(Dispatchers.IO) {
-        val connection = (URL("$BASE_URL$path").openConnection() as HttpURLConnection).apply {
+        requestConnection(URL("$BASE_URL$path"), method, body)
+    }
+
+    private suspend inline fun <reified T> requestUrl(
+        url: String,
+        method: String,
+        body: String? = null
+    ): T = withContext(Dispatchers.IO) {
+        requestConnection(URL(url), method, body)
+    }
+
+    private inline fun <reified T> requestConnection(
+        url: URL,
+        method: String,
+        body: String? = null
+    ): T {
+        val connection = (url.openConnection() as HttpURLConnection).apply {
             requestMethod = method
             connectTimeout = 10000
             readTimeout = 10000
@@ -144,7 +176,7 @@ object StreakApi {
                 throw if (apiError == null) Exception() else Exception(apiError)
             }
 
-            apiJson.decodeFromString<T>(responseBody)
+            return apiJson.decodeFromString<T>(responseBody)
         } finally {
             connection.disconnect()
         }

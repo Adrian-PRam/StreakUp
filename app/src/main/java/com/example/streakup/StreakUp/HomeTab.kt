@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -50,6 +51,11 @@ import com.example.streakup.ui.theme.StreakBG
 import com.example.streakup.ui.theme.TextBoxColor
 import com.example.streakup.ui.theme.TextPurple
 import kotlinx.coroutines.launch
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 
 @Composable
@@ -64,6 +70,7 @@ fun HomeStreak(
     val scope = rememberCoroutineScope()
     val loadHabitsErrorMessage = stringResource(R.string.load_habits_error)
     val completeHabitErrorMessage = stringResource(R.string.complete_habit_error)
+    var todayDate by remember { mutableStateOf(formatTodayDate()) }
 
     fun loadHabits() {
         val userId = currentUser?.id ?: return
@@ -85,10 +92,21 @@ fun HomeStreak(
         loadHabits()
     }
 
+    LaunchedEffect(Unit) {
+        runCatching {
+            StreakApi.getWorldTime(TimeZone.getDefault().id)
+        }.onSuccess { response ->
+            todayDate = formatWorldTimeDate(response.datetime)
+        }.onFailure {
+            todayDate = formatTodayDate()
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(StreakBG)
+            .safeDrawingPadding()
     ) {
 
         Column(
@@ -107,7 +125,7 @@ fun HomeStreak(
             )
 
             Text(
-                stringResource(R.string.home_sample_date),
+                todayDate,
                 fontSize = 14.sp,
                 color = Color.LightGray,
                 modifier = Modifier.padding(top = 4.dp)
@@ -135,7 +153,7 @@ fun HomeStreak(
                         .clip(RoundedCornerShape(15.dp))
                         .background(TextBoxColor)
                         .padding(15.dp)
-                        .fillMaxWidth(0.45f),
+                        .weight(1f),
                     horizontalAlignment = Alignment.Start
                 ) {
                     Text("🎯", fontSize = 20.sp)
@@ -148,7 +166,7 @@ fun HomeStreak(
                         .clip(RoundedCornerShape(15.dp))
                         .background(TextBoxColor)
                         .padding(15.dp)
-                        .fillMaxWidth(0.7f),
+                        .weight(1f),
                     horizontalAlignment = Alignment.Start
                 ) {
                     Text("🏆", fontSize = 20.sp)
@@ -184,7 +202,7 @@ fun HomeStreak(
                             .clip(RoundedCornerShape(12.dp))
                             .background(Color(0xFF1A0F0F))
                             .padding(20.dp)
-                            .fillMaxWidth(0.45f),
+                            .weight(1f),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text("🔥", fontSize = 22.sp)
@@ -196,7 +214,7 @@ fun HomeStreak(
                             .clip(RoundedCornerShape(12.dp))
                             .background(Color(0xFF2A1626))
                             .padding(20.dp)
-                            .fillMaxWidth(0.9f),
+                            .weight(1f),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text("🕯️", fontSize = 22.sp)
@@ -216,7 +234,7 @@ fun HomeStreak(
                             .clip(RoundedCornerShape(12.dp))
                             .background(Color(0xFF13202B))
                             .padding(20.dp)
-                            .fillMaxWidth(0.45f),
+                            .weight(1f),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text("🧊", fontSize = 22.sp)
@@ -228,7 +246,7 @@ fun HomeStreak(
                             .clip(RoundedCornerShape(12.dp))
                             .background(Color(0xFF2B1F12))
                             .padding(20.dp)
-                            .fillMaxWidth(0.9f),
+                            .weight(1f),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text("⏳", fontSize = 22.sp)
@@ -411,5 +429,19 @@ private fun HomeHabitRow(habit: Habit, onComplete: () -> Unit) {
         ) {
             Text(stringResource(R.string.mark_completed))
         }
+    }
+}
+
+private fun formatTodayDate(): String {
+    return DateFormat.getDateInstance(DateFormat.FULL, Locale.getDefault()).format(Date())
+}
+
+private fun formatWorldTimeDate(datetime: String): String {
+    val dateText = datetime.take(10)
+    val parsedDate = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(dateText)
+    return if (parsedDate == null) {
+        formatTodayDate()
+    } else {
+        DateFormat.getDateInstance(DateFormat.FULL, Locale.getDefault()).format(parsedDate)
     }
 }

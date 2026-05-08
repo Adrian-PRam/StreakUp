@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -75,6 +76,7 @@ fun HabitsScreen(navegante: NavHostController, currentUser: CurrentUser?) {
         modifier = Modifier
             .fillMaxSize()
             .background(StreakBG)
+            .safeDrawingPadding()
     ) {
         Column(
             modifier = Modifier
@@ -161,6 +163,8 @@ fun CreateHabitScreen(navegante: NavHostController, currentUser: CurrentUser?) {
         modifier = Modifier
             .fillMaxSize()
             .background(StreakBG)
+            .safeDrawingPadding()
+            .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {
         Text(stringResource(R.string.create_habit), color = Color.White, fontSize = 26.sp, fontWeight = FontWeight.Bold)
@@ -272,10 +276,12 @@ fun ProfileScreen(navegante: NavHostController, currentUser: CurrentUser?) {
         modifier = Modifier
             .fillMaxSize()
             .background(StreakBG)
+            .safeDrawingPadding()
     ) {
         Column(
             modifier = Modifier
                 .weight(1f)
+                .verticalScroll(rememberScrollState())
                 .padding(16.dp)
         ) {
             Text(stringResource(R.string.profile_title), color = Color.White, fontSize = 26.sp, fontWeight = FontWeight.Bold)
